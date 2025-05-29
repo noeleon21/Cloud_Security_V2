@@ -27,8 +27,6 @@ resource "aws_iam_instance_profile" "test_profile" {
 }
 
 
-
-
 resource "aws_iam_user" "new_user" {
   name = "myuseraccess"
   

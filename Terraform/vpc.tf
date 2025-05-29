@@ -8,12 +8,15 @@ resource "aws_subnet" "public_subnet" {
   vpc_id     = aws_vpc.web_vpc.id
   cidr_block = "10.0.16.0/20"
   map_public_ip_on_launch = true
+  availability_zone = "us-east-1a"
   
 }
 
 resource "aws_subnet" "private_subnet" {
   vpc_id     = aws_vpc.web_vpc.id
   cidr_block = "10.0.32.0/20"
+  
+  availability_zone = "us-east-1b"
 }
 
 #Attach internet gateway on the public subnet
@@ -63,7 +66,13 @@ resource "aws_vpc_security_group_ingress_rule" "allow_tls_ipv4_http" {
   ip_protocol       = "tcp"
   to_port           = 80
 }
-
+resource "aws_vpc_security_group_ingress_rule" "allow_tls_ipv4_mysql" {
+  security_group_id = aws_security_group.allow_tls.id
+  cidr_ipv4         = "0.0.0.0/0"
+  from_port         = 3306
+  ip_protocol       = "tcp"
+  to_port           = 3306
+}
 resource "aws_vpc_security_group_egress_rule" "allow_all_traffic_ipv4" {
   security_group_id = aws_security_group.allow_tls.id
   cidr_ipv4         = "0.0.0.0/0"
