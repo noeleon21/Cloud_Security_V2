@@ -9,3 +9,8 @@ variable "db_password" {
     sensitive = true
   
 }
+
+variable "my_ip" {
+    description = "Your IP address"
+    type = string 
+}
