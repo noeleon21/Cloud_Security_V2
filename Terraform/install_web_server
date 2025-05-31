@@ -7,20 +7,6 @@ sudo yum install -y httpd mod_ssl mariadb105
 # Enable and start Apache
 sudo systemctl enable --now httpd
 
-sudo service httpd status
-
 # Add website content
-sudo echo "Hello this is my website" > /var/www/html/index.html
+echo "Hello this is my website" > /var/www/html/index.html
 
-# Generate self-signed SSL cert
-sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
-  -keyout /etc/pki/tls/private/selfsigned.key \
-  -out /etc/pki/tls/certs/selfsigned.crt \
-  -subj "/C=US/ST=State/L=City/O=Org/CN=localhost"
-
-# Replace SSL certificate paths in Apache's ssl.conf
-sudo sed -i 's|^SSLCertificateFile .*|SSLCertificateFile /etc/pki/tls/certs/selfsigned.crt|' /etc/httpd/conf.d/ssl.conf
-sudo sed -i 's|^SSLCertificateKeyFile .*|SSLCertificateKeyFile /etc/pki/tls/private/selfsigned.key|' /etc/httpd/conf.d/ssl.conf
-
-# Restart Apache to apply SSL configuration
-sudo systemctl restart httpd
